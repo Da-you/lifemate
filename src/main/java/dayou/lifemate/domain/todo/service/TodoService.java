@@ -27,21 +27,18 @@ public class TodoService {
 
 	@Transactional
 	public void createTodo(String email, LocalDate date) {
-		Member member = memberRepo.findByEmail(email);
-		if (member == null) {
-			throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
-		}
+		Member member = memberRepo.findByEmail(email).orElseThrow(
+			() -> new IllegalArgumentException("존재하지 않는 사용자 입니다.")
+		);
 
 		todoRepo.save(Todo.builder().member(member).date(date).build());
 	}
 
 	@Transactional
 	public void createTask(String email, LocalDate date, String category, String task) {
-		Member member = memberRepo.findByEmail(email);
-		if (member == null) {
-			throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
-		}
-
+		Member member = memberRepo.findByEmail(email).orElseThrow(
+			() -> new IllegalArgumentException("존재하지 않는 사용자 입니다.")
+		);
 		Todo todo = todoRepo.findByMemberAndDate(member, date);
 		if (todo == null) {
 			throw new IllegalArgumentException("일정을 먼저 생성해 주세요");
@@ -57,10 +54,9 @@ public class TodoService {
 
 	@Transactional(readOnly = true)
 	public List<TodoResponseDto> getCalender(String email) {
-		Member member = memberRepo.findByEmail(email);
-		if (member == null) {
-			throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
-		}
+		Member member = memberRepo.findByEmail(email).orElseThrow(
+			() -> new IllegalArgumentException("존재하지 않는 사용자 입니다.")
+		);
 		List<TodoResponseDto> res = new ArrayList<>();
 		List<Todo> todos = todoRepo.findAllByMember(member);
 		for (Todo todo : todos) {
@@ -75,10 +71,9 @@ public class TodoService {
 
 	@Transactional(readOnly = true)
 	public List<TodoTask> getTasks(String email, Long todoId) {
-		Member member = memberRepo.findByEmail(email);
-		if (member == null) {
-			throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
-		}
+		Member member = memberRepo.findByEmail(email).orElseThrow(
+			() -> new IllegalArgumentException("존재하지 않는 사용자 입니다.")
+		);
 		Todo todo = todoRepo.findById(todoId).orElseThrow(() -> new IllegalArgumentException("일정이 존재하지 않습니다."));
 
 		List<TodoTask> tasks = taskRepo.findAllByTodo(todo);

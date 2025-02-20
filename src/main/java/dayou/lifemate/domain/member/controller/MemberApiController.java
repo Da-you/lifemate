@@ -26,7 +26,6 @@ public class MemberApiController {
 
 	@PostMapping("/login")
 	public String login(@RequestBody MemberRequestDto req) {
-		loginService.login(req);
-		return "로그인 완료";
+		return loginService.login(req);
 	}
 }
