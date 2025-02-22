@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import dayou.lifemate.domain.member.dto.MemberLoginRequestDto;
 import dayou.lifemate.domain.member.dto.MemberRequestDto;
 import dayou.lifemate.domain.member.service.MemberLoginService;
 import dayou.lifemate.domain.member.service.MemberService;
@@ -25,7 +26,7 @@ public class MemberApiController {
 	}
 
 	@PostMapping("/login")
-	public String login(@RequestBody MemberRequestDto req) {
+	public String login(@RequestBody MemberLoginRequestDto req) {
 		return loginService.login(req);
 	}
 }

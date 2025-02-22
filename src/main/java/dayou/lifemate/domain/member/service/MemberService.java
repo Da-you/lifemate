@@ -11,7 +11,9 @@ import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.domain.member.enums.Role;
 import dayou.lifemate.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -27,6 +29,7 @@ public class MemberService {
 			.nickname(req.getNickname())
 			.role(ROLE_USER)
 			.build();
+		log.info(member.getPassword());
 		memberRepo.save(member);
 	}
 }
