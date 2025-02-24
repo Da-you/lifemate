@@ -2,6 +2,8 @@ package dayou.lifemate.domain.todo.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dayou.lifemate.domain.member.service.MemberLoginService;
 import dayou.lifemate.domain.todo.dto.TodoRequestDto;
 import dayou.lifemate.domain.todo.dto.TodoResponseDto;
+import dayou.lifemate.domain.todo.dto.TodoResponseDto.TodoCreateResponseDto;
 import dayou.lifemate.domain.todo.dto.TodoResponseDto.TodoResponseWithTaskCountDto;
 import dayou.lifemate.domain.todo.entity.TodoTask;
 import dayou.lifemate.domain.todo.service.TodoService;
@@ -31,13 +34,13 @@ public class TodoApiController {
 	private final MemberLoginService loginService;
 
 	@PostMapping
-	public ResponseEntity<TodoResponseDto> createTodo(@AuthenticationPrincipal User user,
+	public ResponseEntity<TodoCreateResponseDto> createTodo(@AuthenticationPrincipal User user,
 		@RequestBody TodoRequestDto req) {
 		String email = loginService.getCurrentMember(user.getUsername());
 		return ResponseEntity.ok(todoService.createTodo(email, req));
 	}
 
-	@GetMapping
+	@GetMapping("/calender")
 	public ResponseEntity<List<TodoResponseWithTaskCountDto>> getCalender(@AuthenticationPrincipal User user) {
 		String email = loginService.getCurrentMember(user.getUsername());
 		return ResponseEntity.ok(todoService.getCalender(email));
@@ -47,6 +50,10 @@ public class TodoApiController {
 	public List<TodoTask> geTasks(@AuthenticationPrincipal User user, @PathVariable Long id) {
 		String email = loginService.getCurrentMember(user.getUsername());
 		return todoService.getTasks(email, id);
+	}
+	@GetMapping
+	public ResponseEntity<Page<TodoResponseDto>> getTodos(Pageable pageable){
+		return ResponseEntity.ok(todoService.getTodoList(pageable));
 	}
 
 }

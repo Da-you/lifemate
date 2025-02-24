@@ -10,6 +10,7 @@ import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,16 +31,19 @@ public class Todo extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Member member;
 	@Enumerated(EnumType.STRING)
 	private Category category;
 
 	private LocalDate date;
 
-	@OneToMany
+	@OneToMany(mappedBy = "todo")
 	private Set<TodoTask> tasks = new HashSet<>();
+
+	@OneToMany(mappedBy = "todo")
+	private Set<TodoTag> tags = new HashSet<>();
 
 	@Builder
 	public Todo(Member member, LocalDate date, Category category) {

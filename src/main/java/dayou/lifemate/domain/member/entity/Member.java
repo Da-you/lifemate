@@ -25,7 +25,7 @@ public class Member extends BaseTimeEntity {
 	private String password;
 	private String nickname;
 	@Enumerated(EnumType.STRING)
-	private Role role;
+	private Role role = Role.ROLE_USER;
 
 	@Builder
 	public Member(String email, String password, String nickname, Role role) {

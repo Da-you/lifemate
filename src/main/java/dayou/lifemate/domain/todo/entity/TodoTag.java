@@ -1,10 +1,7 @@
 package dayou.lifemate.domain.todo.entity;
 
-import dayou.lifemate.global.BaseTimeEntity;
-import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,24 +15,23 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TodoTask extends BaseTimeEntity {
+public class TodoTag {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "todo_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne
+	@JoinColumn(name = "todo_id")
 	private Todo todo;
 
-	private String task;
-
-	private boolean isDone;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tag_id")
+	private Tag tag;
 
 	@Builder
-	public TodoTask(Todo todo, String task) {
+	public TodoTag(Todo todo, Tag tag) {
 		this.todo = todo;
-		this.task = task;
-		this.isDone = false;
+		this.tag = tag;
 	}
 }

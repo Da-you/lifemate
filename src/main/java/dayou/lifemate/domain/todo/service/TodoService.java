@@ -3,6 +3,8 @@ package dayou.lifemate.domain.todo.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +12,7 @@ import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.domain.member.repository.MemberRepository;
 import dayou.lifemate.domain.todo.dto.TodoRequestDto;
 import dayou.lifemate.domain.todo.dto.TodoResponseDto;
+import dayou.lifemate.domain.todo.dto.TodoResponseDto.TodoCreateResponseDto;
 import dayou.lifemate.domain.todo.dto.TodoResponseDto.TodoResponseWithTaskCountDto;
 import dayou.lifemate.domain.todo.entity.Todo;
 import dayou.lifemate.domain.todo.entity.TodoTask;
@@ -28,7 +31,7 @@ public class TodoService {
 	private final TodoTaskRepository taskRepo;
 
 	@Transactional
-	public TodoResponseDto createTodo(String email, TodoRequestDto req) {
+	public TodoCreateResponseDto createTodo(String email, TodoRequestDto req) {
 		log.info(email);
 		Member member = memberRepo.findByEmail(email).orElseThrow(
 			() -> new IllegalArgumentException("존재하지 않는 사용자 입니다.")
@@ -38,7 +41,7 @@ public class TodoService {
 
 		TodoTask task = TodoTask.builder().todo(todo).task(req.getTask()).build();
 		taskRepo.save(task);
-		return TodoResponseDto.builder().todoId(todo.getId()).date(todo.getDate()).task(task.getTask()).build();
+		return TodoCreateResponseDto.builder().todoId(todo.getId()).date(todo.getDate()).task(task.getTask()).build();
 	}
 
 	@Transactional(readOnly = true)
@@ -65,6 +68,11 @@ public class TodoService {
 
 		List<TodoTask> tasks = taskRepo.findAllByTodo(todo);
 		return tasks;
+	}
 
+	@Transactional(readOnly = true)
+	public Page<TodoResponseDto> getTodoList(Pageable pageable) {
+		Page<Todo> todos = todoRepo.findAll(pageable);
+		return todos.map(TodoResponseDto::new);
 	}
 }
