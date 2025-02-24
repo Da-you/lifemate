@@ -1,6 +1,5 @@
 package dayou.lifemate.domain.todo.entity;
 
-import dayou.lifemate.domain.member.entity.Member;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;

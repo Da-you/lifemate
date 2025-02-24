@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dayou.lifemate.domain.member.dto.MemberLoginRequestDto;
-import dayou.lifemate.domain.member.dto.MemberRequestDto;
 import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.domain.member.repository.MemberRepository;
 import dayou.lifemate.global.jwt.JwtProvider;

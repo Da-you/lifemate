@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dayou.lifemate.domain.member.dto.MemberRequestDto;
 import dayou.lifemate.domain.member.entity.Member;
-import dayou.lifemate.domain.member.enums.Role;
 import dayou.lifemate.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
