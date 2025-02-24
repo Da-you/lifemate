@@ -26,16 +26,13 @@ public class TodoTask {
 	@JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Todo todo;
 
-	private String category;
-
 	private String task;
 
 	private boolean isDone;
 
 	@Builder
-	public TodoTask(Todo todo, String category, String task) {
+	public TodoTask(Todo todo, String task) {
 		this.todo = todo;
-		this.category = category;
 		this.task = task;
 		this.isDone = false;
 	}

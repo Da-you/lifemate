@@ -2,12 +2,13 @@ package dayou.lifemate.domain.todo.entity;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import dayou.lifemate.domain.member.entity.Member;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +32,8 @@ public class Todo {
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Member member;
+	@Enumerated(EnumType.STRING)
+	private Category category;
 
 	private LocalDate date;
 
@@ -38,8 +41,9 @@ public class Todo {
 	private Set<TodoTask> tasks = new HashSet<>();
 
 	@Builder
-	public Todo(Member member, LocalDate date) {
+	public Todo(Member member, LocalDate date, Category category) {
 		this.member = member;
 		this.date = date;
+		this.category = category;
 	}
 }

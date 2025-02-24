@@ -31,9 +31,10 @@ public class JwtProvider {
 	private final Key key;
 	private final long accessExpiration;
 
-	public JwtProvider(@Value("${jwt.secret}") String key,
-		@Value("${jwt.expiration}") long accessExpiration) {
-		this.key = Keys.hmacShaKeyFor(key.getBytes());
+	public JwtProvider(
+		@Value(value = "${jwt.secret}") String secret,
+		@Value(value = "${jwt.expiration}") long accessExpiration) {
+		this.key = Keys.hmacShaKeyFor(secret.getBytes());
 		this.accessExpiration = accessExpiration;
 	}
 
@@ -85,7 +86,6 @@ public class JwtProvider {
 		} else {
 			authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
 		}
-
 		UserDetails principal = new User(claims.getSubject(), "", authorities);
 		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 	}

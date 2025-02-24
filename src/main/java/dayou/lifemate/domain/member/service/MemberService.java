@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dayou.lifemate.domain.member.dto.MemberRequestDto;
+import dayou.lifemate.domain.member.dto.MemberResponseDto;
 import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class MemberService {
 	private final PasswordEncoder encoder;
 
 	@Transactional
-	public void join(MemberRequestDto req) {
+	public MemberResponseDto join(MemberRequestDto req) {
 		Member member = Member.builder()
 			.email(req.getEmail())
 			.password(encoder.encode(req.getPassword()))
@@ -30,5 +31,12 @@ public class MemberService {
 			.build();
 		log.info(member.getPassword());
 		memberRepo.save(member);
+
+		return MemberResponseDto.builder()
+			.id(member.getId())
+			.email(member.getEmail())
+			.nickname(member.getNickname())
+			.role(member.getRole().getName())
+			.build();
 	}
 }

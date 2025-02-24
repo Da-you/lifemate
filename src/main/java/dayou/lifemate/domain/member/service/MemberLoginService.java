@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dayou.lifemate.domain.member.dto.MemberLoginRequestDto;
+import dayou.lifemate.domain.member.dto.MemberLoginResponseDto;
 import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.domain.member.repository.MemberRepository;
 import dayou.lifemate.global.jwt.JwtProvider;
@@ -21,15 +22,27 @@ public class MemberLoginService {
 	private final JwtProvider jwtProvider;
 
 	@Transactional
-	public String login(MemberLoginRequestDto req) {
+	public MemberLoginResponseDto login(MemberLoginRequestDto req) {
 		Member member = memberRepo.findByEmail(req.getEmail())
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다."));
 		String password = member.getPassword();
 		log.info(password);
-		if (!encoder.matches(req.getPassword(), password)){
+		if (!encoder.matches(req.getPassword(), password)) {
 			throw new IllegalArgumentException("비밀번호가 일치 아지 않습니다.");
 		}
 
-		return jwtProvider.createToken(member.getEmail());
+		return MemberLoginResponseDto.builder()
+			.email(member.getEmail())
+			.accessToken(jwtProvider.createToken(member.getEmail()))
+			.build();
+	}
+
+	@Transactional(readOnly = true)
+	public String getCurrentMember(String email) {
+		Member member = memberRepo.findByEmail(email)
+			.orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
+
+		log.info("Found member: {}", member);
+		return member.getEmail();
 	}
 }

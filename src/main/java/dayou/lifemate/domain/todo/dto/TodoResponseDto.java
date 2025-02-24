@@ -14,6 +14,15 @@ import lombok.NoArgsConstructor;
 public class TodoResponseDto {
 	private Long todoId;
 	private LocalDate date;
-	private int taskCount;
+	private String task;
 
+	@Getter
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class TodoResponseWithTaskCountDto {
+		private Long todoId;
+		private LocalDate date;
+		private int taskCount;
+	}
 }
