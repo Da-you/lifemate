@@ -25,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		FilterChain chain) throws ServletException, IOException {
 		String token = resolveToken(req);
 
-		log.info("Received token: {}", token);
+
 		// 2. validateToken 으로 토큰 유효성 검사
 		if (token != null && provider.validateToken(token)) {
 			// 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
