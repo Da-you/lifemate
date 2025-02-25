@@ -3,8 +3,6 @@ package dayou.lifemate.domain.todo.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import dayou.lifemate.domain.todo.entity.Category;
 import dayou.lifemate.domain.todo.entity.Todo;
@@ -24,8 +22,6 @@ public class TodoResponseDto {
 	private Category category;
 	private List<String> task;
 	private List<String> tags;
-	private Map<String, Long> tagStats;
-	private Set<String> relatedTags;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 

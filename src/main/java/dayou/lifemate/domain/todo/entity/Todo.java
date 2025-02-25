@@ -15,9 +15,11 @@ import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +27,12 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(
+	indexes = @Index(
+		name = "idx_category_date",
+		columnList = "category, date desc"
+	)
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Todo extends BaseTimeEntity {
 	@Id
@@ -34,15 +42,16 @@ public class Todo extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Member member;
+
 	@Enumerated(EnumType.STRING)
 	private Category category;
 
 	private LocalDate date;
 
-	@OneToMany(mappedBy = "todo")
+	@OneToMany(mappedBy = "todo", fetch = FetchType.LAZY)
 	private Set<TodoTask> tasks = new HashSet<>();
 
-	@OneToMany(mappedBy = "todo")
+	@OneToMany(mappedBy = "todo", fetch = FetchType.LAZY)
 	private Set<TodoTag> tags = new HashSet<>();
 
 	@Builder

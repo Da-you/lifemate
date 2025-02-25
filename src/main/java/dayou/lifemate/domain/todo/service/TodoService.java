@@ -1,5 +1,6 @@
 package dayou.lifemate.domain.todo.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import dayou.lifemate.domain.todo.dto.TodoRequestDto;
 import dayou.lifemate.domain.todo.dto.TodoResponseDto;
 import dayou.lifemate.domain.todo.dto.TodoResponseDto.TodoCreateResponseDto;
 import dayou.lifemate.domain.todo.dto.TodoResponseDto.TodoResponseWithTaskCountDto;
+import dayou.lifemate.domain.todo.entity.Category;
 import dayou.lifemate.domain.todo.entity.Todo;
 import dayou.lifemate.domain.todo.entity.TodoTask;
 import dayou.lifemate.domain.todo.repository.TodoRepository;
@@ -71,8 +73,10 @@ public class TodoService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<TodoResponseDto> getTodoList(Pageable pageable) {
-		Page<Todo> todos = todoRepo.findAll(pageable);
+	public Page<TodoResponseDto> getTodoList(LocalDate date, Category category, Pageable pageable) {
+		Page<Todo> todos = category == null ? todoRepo.findAll(pageable) :
+			todoRepo.findAllByCategoryAndDate(category, date, pageable);
+
 		return todos.map(TodoResponseDto::new);
 	}
 }

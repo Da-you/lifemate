@@ -8,10 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import dayou.lifemate.domain.member.entity.Member;
+import dayou.lifemate.domain.todo.entity.Category;
 import dayou.lifemate.domain.todo.entity.Todo;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 	Todo findByMemberAndDate(Member member, LocalDate date);
-	Page<Todo> findAll(Pageable pageable);
+
 	List<Todo> findAllByMember(Member member);
+
+	Page<Todo> findAllByCategoryAndDate(Category category, LocalDate today, Pageable pageable);
 }
