@@ -1,4 +1,4 @@
-package dayou.lifemate.domain.todo.entity;
+package dayou.lifemate.domain.todo.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

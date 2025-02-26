@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import dayou.lifemate.domain.member.entity.Member;
-import dayou.lifemate.domain.todo.entity.Category;
+import dayou.lifemate.domain.todo.enums.Category;
 import dayou.lifemate.domain.todo.entity.Todo;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {

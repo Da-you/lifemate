@@ -21,7 +21,7 @@ import dayou.lifemate.domain.todo.dto.TodoRequestDto;
 import dayou.lifemate.domain.todo.dto.TodoResponseDto;
 import dayou.lifemate.domain.todo.dto.TodoResponseDto.TodoCreateResponseDto;
 import dayou.lifemate.domain.todo.dto.TodoResponseDto.TodoResponseWithTaskCountDto;
-import dayou.lifemate.domain.todo.entity.Category;
+import dayou.lifemate.domain.todo.enums.Category;
 import dayou.lifemate.domain.todo.entity.TodoTask;
 import dayou.lifemate.domain.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;

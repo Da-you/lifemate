@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import dayou.lifemate.domain.todo.entity.Category;
+import dayou.lifemate.domain.todo.enums.Category;
 import dayou.lifemate.domain.todo.entity.Todo;
 import dayou.lifemate.domain.todo.entity.TodoTask;
 import lombok.AllArgsConstructor;

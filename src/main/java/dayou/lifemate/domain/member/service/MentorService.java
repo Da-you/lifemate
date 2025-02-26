@@ -38,6 +38,7 @@ public class MentorService {
 			.description(req.getDescription())
 			.build();
 		mentorRepo.save(mentor);
+		member.registerMentor();
 
 		return MentorResponseDto.builder()
 			.mentor(mentor)

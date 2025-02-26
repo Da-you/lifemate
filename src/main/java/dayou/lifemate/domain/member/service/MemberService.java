@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import dayou.lifemate.domain.member.dto.request.MemberRequestDto;
 import dayou.lifemate.domain.member.dto.response.MemberResponseDto;
 import dayou.lifemate.domain.member.entity.Member;
+import dayou.lifemate.domain.member.repository.MateRepository;
 import dayou.lifemate.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberService {
 
 	private final MemberRepository memberRepo;
+	private final MateRepository mateRepo;
 	private final PasswordEncoder encoder;
 
 	@Transactional

@@ -2,6 +2,7 @@ package dayou.lifemate.domain.member.entity;
 
 import dayou.lifemate.domain.member.enums.Role;
 import dayou.lifemate.global.BaseTimeEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,8 +22,11 @@ public class Member extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(nullable = false, unique = true)
 	private String email;
+	@Column(nullable = false)
 	private String password;
+	@Column(nullable = false, unique = true)
 	private String nickname;
 	@Enumerated(EnumType.STRING)
 	private Role role = Role.ROLE_USER;
@@ -33,5 +37,9 @@ public class Member extends BaseTimeEntity {
 		this.password = password;
 		this.nickname = nickname;
 		this.role = role;
+	}
+
+	public void registerMentor() {
+		this.role = Role.ROLE_MENTOR;
 	}
 }

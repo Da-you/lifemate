@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import dayou.lifemate.domain.member.entity.Member;
+import dayou.lifemate.domain.todo.enums.Category;
 import dayou.lifemate.global.BaseTimeEntity;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -15,11 +16,9 @@ import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,12 +26,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(
-	indexes = @Index(
-		name = "idx_category_date",
-		columnList = "category, date desc"
-	)
-)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Todo extends BaseTimeEntity {
 	@Id
