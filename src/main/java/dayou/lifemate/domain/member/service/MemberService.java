@@ -6,8 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dayou.lifemate.domain.member.dto.MemberRequestDto;
-import dayou.lifemate.domain.member.dto.MemberResponseDto;
+import dayou.lifemate.domain.member.dto.request.MemberRequestDto;
+import dayou.lifemate.domain.member.dto.response.MemberResponseDto;
 import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +33,15 @@ public class MemberService {
 		memberRepo.save(member);
 
 		return MemberResponseDto.builder()
-			.id(member.getId())
-			.email(member.getEmail())
-			.nickname(member.getNickname())
-			.role(member.getRole().getName())
+			.member(member)
 			.build();
+	}
+
+	@Transactional(readOnly = true)
+	public MemberResponseDto getMyInfo(String email) {
+		Member member = memberRepo.findByEmail(email)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다."));
+
+		return MemberResponseDto.builder().member(member).build();
 	}
 }

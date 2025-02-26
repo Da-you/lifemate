@@ -1,4 +1,4 @@
-package dayou.lifemate.domain.member.dto;
+package dayou.lifemate.domain.member.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
