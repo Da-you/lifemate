@@ -1,7 +1,7 @@
 package dayou.lifemate.domain.member.dto.response;
 
 import dayou.lifemate.domain.member.entity.Mate;
-import dayou.lifemate.domain.member.entity.Mentor;
+import dayou.lifemate.domain.member.entity.MentorInfo;
 import dayou.lifemate.domain.member.enums.Field;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,12 +33,12 @@ public class MateResponseDto {
 		private int career;
 
 		@Builder
-		public MateListResponseDto(Long mateId, Mentor mentor) {
+		public MateListResponseDto(Long mateId, MentorInfo mentorInfo) {
 			this.mateId = mateId;
-			this.nickname = mentor.getMember().getNickname();
-			this.field = mentor.getField();
-			this.job = mentor.getJob();
-			this.career = mentor.getCareer();
+			this.nickname = mentorInfo.getMember().getNickname();
+			this.field = mentorInfo.getField();
+			this.job = mentorInfo.getJob();
+			this.career = mentorInfo.getCareer();
 		}
 	}
 }

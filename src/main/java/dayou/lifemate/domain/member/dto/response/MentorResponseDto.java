@@ -1,6 +1,6 @@
 package dayou.lifemate.domain.member.dto.response;
 
-import dayou.lifemate.domain.member.entity.Mentor;
+import dayou.lifemate.domain.member.entity.MentorInfo;
 import dayou.lifemate.domain.member.enums.Field;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MentorResponseDto {
 
-	private Long mentorId;
+	private Long infoId;
 
 	private String nickname;
 
@@ -23,13 +23,13 @@ public class MentorResponseDto {
 	private String description;
 
 	@Builder
-	public MentorResponseDto(Mentor mentor) {
-		this.mentorId = mentor.getId();
-		this.nickname = mentor.getMember().getNickname();
-		this.field = mentor.getField();
-		this.job = mentor.getJob();
-		this.career = mentor.getCareer();
-		this.description = mentor.getDescription();
+	public MentorResponseDto(MentorInfo mentorInfo) {
+		this.infoId = mentorInfo.getId();
+		this.nickname = mentorInfo.getMember().getNickname();
+		this.field = mentorInfo.getField();
+		this.job = mentorInfo.getJob();
+		this.career = mentorInfo.getCareer();
+		this.description = mentorInfo.getDescription();
 	}
 
 	@Getter
@@ -46,12 +46,12 @@ public class MentorResponseDto {
 		private int career;
 
 		@Builder
-		public MentorListResponseDto(Mentor mentor) {
-			this.mentorId = mentor.getId();
-			this.nickname = mentor.getMember().getNickname();
-			this.field = mentor.getField();
-			this.job = mentor.getJob();
-			this.career = mentor.getCareer();
+		public MentorListResponseDto(MentorInfo mentorInfo) {
+			this.mentorId = mentorInfo.getId();
+			this.nickname = mentorInfo.getMember().getNickname();
+			this.field = mentorInfo.getField();
+			this.job = mentorInfo.getJob();
+			this.career = mentorInfo.getCareer();
 		}
 	}
 }

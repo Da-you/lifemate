@@ -1,6 +1,10 @@
 package dayou.lifemate.domain.member.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dayou.lifemate.domain.member.enums.Field;
+import dayou.lifemate.domain.review.entity.Review;
 import dayou.lifemate.global.BaseTimeEntity;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -13,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Mentor extends BaseTimeEntity {
+public class MentorInfo extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +45,11 @@ public class Mentor extends BaseTimeEntity {
 
 	private String description;
 
+	@OneToMany(mappedBy = "info")
+	private List<Review> reviews = new ArrayList<>();
+
 	@Builder
-	public Mentor(Member member, Field field, String job, int career, String description) {
+	public MentorInfo(Member member, Field field, String job, int career, String description) {
 		this.member = member;
 		this.field = field;
 		this.job = job;

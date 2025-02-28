@@ -10,10 +10,10 @@ import dayou.lifemate.domain.member.dto.response.MateResponseDto;
 import dayou.lifemate.domain.member.dto.response.MateResponseDto.MateListResponseDto;
 import dayou.lifemate.domain.member.entity.Mate;
 import dayou.lifemate.domain.member.entity.Member;
-import dayou.lifemate.domain.member.entity.Mentor;
+import dayou.lifemate.domain.member.entity.MentorInfo;
 import dayou.lifemate.domain.member.repository.MateRepository;
 import dayou.lifemate.domain.member.repository.MemberRepository;
-import dayou.lifemate.domain.member.repository.MentorRepository;
+import dayou.lifemate.domain.member.repository.MentorInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MateService {
 	private final MemberRepository memberRepo;
-	private final MentorRepository mentorRepo;
+	private final MentorInfoRepository mentorRepo;
 	private final MateRepository mateRepo;
 
 	@Transactional
@@ -70,11 +70,11 @@ public class MateService {
 		List<MateListResponseDto> res = new ArrayList<>();
 		List<Mate> mates = mateRepo.findAllByMentee(mentee);
 		for (Mate mate : mates) {
-			Mentor mentor = mentorRepo.findByMember(mate.getMentor());
+			MentorInfo mentorInfo = mentorRepo.findByMember(mate.getMentor());
 			res.add(
 				MateListResponseDto.builder()
 					.mateId(mate.getId())
-					.mentor(mentor)
+					.mentorInfo(mentorInfo)
 					.build()
 			);
 		}

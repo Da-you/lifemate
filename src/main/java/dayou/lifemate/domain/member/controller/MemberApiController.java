@@ -28,7 +28,7 @@ import dayou.lifemate.domain.member.dto.response.MentorResponseDto.MentorListRes
 import dayou.lifemate.domain.member.service.MateService;
 import dayou.lifemate.domain.member.service.MemberLoginService;
 import dayou.lifemate.domain.member.service.MemberService;
-import dayou.lifemate.domain.member.service.MentorService;
+import dayou.lifemate.domain.member.service.MentorInfoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -38,7 +38,7 @@ public class MemberApiController {
 
 	private final MemberService memberService;
 	private final MemberLoginService loginService;
-	private final MentorService mentorService;
+	private final MentorInfoService mentorInfoService;
 	private final MateService mateService;
 
 	@PostMapping("/join")
@@ -61,25 +61,25 @@ public class MemberApiController {
 	public ResponseEntity<MentorResponseDto> register(@AuthenticationPrincipal User user,
 		@RequestBody MentorRequestDto req) {
 		String email = loginService.getCurrentMember(user.getUsername());
-		return ResponseEntity.ok(mentorService.register(email, req));
+		return ResponseEntity.ok(mentorInfoService.register(email, req));
 	}
 
 	@PatchMapping("/mentor-info")
 	public ResponseEntity<MentorResponseDto> updateMentorInfo(@AuthenticationPrincipal User user,
 		@RequestBody MentorRequestDto req) {
 		String email = loginService.getCurrentMember(user.getUsername());
-		return ResponseEntity.ok(mentorService.register(email, req));
+		return ResponseEntity.ok(mentorInfoService.register(email, req));
 	}
 
 	@GetMapping("/mentor")
 	public ResponseEntity<Page<MentorListResponseDto>> getMentorList(Pageable pageable) {
-		return ResponseEntity.ok(mentorService.getMentorList(pageable));
+		return ResponseEntity.ok(mentorInfoService.getMentorList(pageable));
 	}
 
 	// 멘토 entity pk로 검색
 	@GetMapping("/mentor/{mentorId}")
 	public ResponseEntity<MentorResponseDto> getMentor(@PathVariable Long mentorId) {
-		return ResponseEntity.ok(mentorService.getMentor(mentorId));
+		return ResponseEntity.ok(mentorInfoService.getMentor(mentorId));
 	}
 
 	@PostMapping("/mate/{mentorId}")

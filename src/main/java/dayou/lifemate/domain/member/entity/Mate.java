@@ -1,6 +1,7 @@
 package dayou.lifemate.domain.member.entity;
 
 import dayou.lifemate.domain.member.enums.Role;
+import dayou.lifemate.global.BaseTimeEntity;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Mate {
+public class Mate extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
