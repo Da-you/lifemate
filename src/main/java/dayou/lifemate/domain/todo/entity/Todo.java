@@ -44,9 +44,6 @@ public class Todo extends BaseTimeEntity {
 	@OneToMany(mappedBy = "todo", fetch = FetchType.LAZY)
 	private Set<TodoTask> tasks = new HashSet<>();
 
-	@OneToMany(mappedBy = "todo", fetch = FetchType.LAZY)
-	private Set<TodoTag> tags = new HashSet<>();
-
 	@Builder
 	public Todo(Member member, LocalDate date, Category category) {
 		this.member = member;

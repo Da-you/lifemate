@@ -38,7 +38,7 @@ public class Mate extends BaseTimeEntity {
 	private Member mentee;
 
 	@Builder
-	public Mate(Member mentor, Member mentee) {
+	public Mate(Member mentor, Member mentee, MentorInfo info) {
 		if (mentor.getRole() != Role.ROLE_MENTOR) {
 			throw new IllegalArgumentException("멘토로 등록된 사용자가 아닙니다.");
 		}

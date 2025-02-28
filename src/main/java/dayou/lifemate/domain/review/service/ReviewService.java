@@ -41,6 +41,7 @@ public class ReviewService {
 			.rating(req.getRating())
 			.build();
 		reviewRepo.save(review);
+		info.plusRating(req.getRating());
 		return ReviewResponseDto.builder()
 			.review(review)
 			.build();

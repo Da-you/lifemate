@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dayou.lifemate.domain.member.dto.request.MentorRequestDto;
+import dayou.lifemate.domain.member.dto.response.MentorDetailResponseDto;
 import dayou.lifemate.domain.member.dto.response.MentorResponseDto;
-import dayou.lifemate.domain.member.dto.response.MentorResponseDto.MentorListResponseDto;
 import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.domain.member.entity.MentorInfo;
 import dayou.lifemate.domain.member.repository.MemberRepository;
@@ -41,7 +41,7 @@ public class MentorInfoService {
 		member.registerMentor();
 
 		return MentorResponseDto.builder()
-			.mentorInfo(mentorInfo)
+			.info(mentorInfo)
 			.build();
 	}
 
@@ -53,24 +53,25 @@ public class MentorInfoService {
 		mentorInfo.updateInfo(req.getField(), req.getJob(), req.getCareer(), req.getDescription());
 
 		return MentorResponseDto.builder()
-			.mentorInfo(mentorInfo)
+			.info(mentorInfo)
 			.build();
 	}
 
 	@Transactional(readOnly = true)
-	public Page<MentorListResponseDto> getMentorList(Pageable pageable) {
+	public Page<MentorDetailResponseDto> getMentorList(Pageable pageable) {
 		Page<MentorInfo> mentors = mentorRepo.findAll(pageable);
 		// 검색 키워드로는 경력(범위), 직무(where)
-		return mentors.map(MentorListResponseDto::new);
+
+		return mentors.map(MentorDetailResponseDto::new);
 	}
 
 	@Transactional(readOnly = true)
-	public MentorResponseDto getMentor(Long mentorId) {
+	public MentorDetailResponseDto getMentor(Long mentorId) {
 		MentorInfo mentorInfo = mentorRepo.findById(mentorId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
 
-		return MentorResponseDto.builder()
-			.mentorInfo(mentorInfo)
+		return MentorDetailResponseDto.builder()
+			.info(mentorInfo)
 			.build();
 	}
 }

@@ -21,7 +21,6 @@ public class TodoResponseDto {
 	private LocalDate date;
 	private Category category;
 	private List<String> task;
-	private List<String> tags;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
@@ -33,8 +32,7 @@ public class TodoResponseDto {
 		this.category = todo.getCategory();
 		this.task = todo.getTasks().stream()
 			.map(TodoTask::getTask).toList();
-		this.tags = todo.getTags().stream()
-			.map(tag -> tag.getTag().getName()).toList();
+
 		this.createdAt = todo.getCreatedAt();
 		this.updatedAt = todo.getUpdatedAt();
 	}

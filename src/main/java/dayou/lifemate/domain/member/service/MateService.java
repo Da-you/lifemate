@@ -54,7 +54,6 @@ public class MateService {
 		Member mentee = memberRepo.findByEmail(email)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다."));
 
-
 		if (mateRepo.findByMenteeAndId(mentee, mateId) == null) {
 			throw new IllegalArgumentException("mate 관계가 아닙니다.");
 		} else {

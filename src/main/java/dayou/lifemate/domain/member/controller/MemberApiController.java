@@ -23,8 +23,8 @@ import dayou.lifemate.domain.member.dto.response.MateResponseDto;
 import dayou.lifemate.domain.member.dto.response.MateResponseDto.MateListResponseDto;
 import dayou.lifemate.domain.member.dto.response.MemberLoginResponseDto;
 import dayou.lifemate.domain.member.dto.response.MemberResponseDto;
+import dayou.lifemate.domain.member.dto.response.MentorDetailResponseDto;
 import dayou.lifemate.domain.member.dto.response.MentorResponseDto;
-import dayou.lifemate.domain.member.dto.response.MentorResponseDto.MentorListResponseDto;
 import dayou.lifemate.domain.member.service.MateService;
 import dayou.lifemate.domain.member.service.MemberLoginService;
 import dayou.lifemate.domain.member.service.MemberService;
@@ -72,13 +72,13 @@ public class MemberApiController {
 	}
 
 	@GetMapping("/mentor")
-	public ResponseEntity<Page<MentorListResponseDto>> getMentorList(Pageable pageable) {
+	public ResponseEntity<Page<MentorDetailResponseDto>> getMentorList(Pageable pageable) {
 		return ResponseEntity.ok(mentorInfoService.getMentorList(pageable));
 	}
 
 	// 멘토 entity pk로 검색
 	@GetMapping("/mentor/{mentorId}")
-	public ResponseEntity<MentorResponseDto> getMentor(@PathVariable Long mentorId) {
+	public ResponseEntity<MentorDetailResponseDto> getMentor(@PathVariable Long mentorId) {
 		return ResponseEntity.ok(mentorInfoService.getMentor(mentorId));
 	}
 

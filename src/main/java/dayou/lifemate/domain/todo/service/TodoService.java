@@ -68,8 +68,7 @@ public class TodoService {
 		Todo todo = todoRepo.findById(todoId).orElseThrow(
 			() -> new IllegalArgumentException("일정이 존재하지 않습니다."));
 
-		List<TodoTask> tasks = taskRepo.findAllByTodo(todo);
-		return tasks;
+		return taskRepo.findAllByTodo(todo);
 	}
 
 	@Transactional(readOnly = true)

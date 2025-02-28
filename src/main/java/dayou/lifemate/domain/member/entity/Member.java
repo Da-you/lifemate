@@ -1,5 +1,8 @@
 package dayou.lifemate.domain.member.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import dayou.lifemate.domain.member.enums.Role;
 import dayou.lifemate.global.BaseTimeEntity;
 import jakarta.persistence.Column;
@@ -9,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,14 +26,21 @@ public class Member extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@Column(nullable = false, unique = true)
 	private String email;
+
 	@Column(nullable = false)
 	private String password;
+
 	@Column(nullable = false, unique = true)
 	private String nickname;
+
 	@Enumerated(EnumType.STRING)
 	private Role role = Role.ROLE_USER;
+
+	@OneToMany(mappedBy = "mentor")
+	private Set<Mate> mates = new HashSet<>();
 
 	@Builder
 	public Member(String email, String password, String nickname, Role role) {

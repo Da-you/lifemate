@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 import dayou.lifemate.global.QueryCountInspector;
 import lombok.RequiredArgsConstructor;
-
+// 직접 작성한 쿼리 카운터를 빈으로 등록
 @Configuration
 @RequiredArgsConstructor
 public class HibernateConfig {
