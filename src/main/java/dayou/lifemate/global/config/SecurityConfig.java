@@ -24,7 +24,7 @@ public class SecurityConfig {
 	private final JwtProvider provider;
 
 	@Bean
-	public JwtAuthenticationFilter filter(){
+	public JwtAuthenticationFilter filter() {
 		return new JwtAuthenticationFilter(provider);
 	}
 
@@ -35,8 +35,15 @@ public class SecurityConfig {
 			.sessionManagement(session -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth ->
-				auth.requestMatchers(HttpMethod.GET, "/todos/v1/**").permitAll()
-					.requestMatchers("/members/v1/join", "/members/v1/login").permitAll()
+				auth.
+					requestMatchers(HttpMethod.GET, "/todos/v1/**", "/reviews/v1/**").permitAll()
+					.requestMatchers(
+						"/members/v1/join",
+						"/members/v1/login",
+						"/members/v1/mentor",
+						"/members/v1/mentor/{mentorId}"
+					)
+					.permitAll()
 					.anyRequest().permitAll())
 			.addFilterBefore(filter(), UsernamePasswordAuthenticationFilter.class);
 

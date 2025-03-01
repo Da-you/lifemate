@@ -25,7 +25,8 @@ public class TodoTask extends BaseTimeEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "todo_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "todo_id",
+		foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Todo todo;
 
 	private String task;

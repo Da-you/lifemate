@@ -45,10 +45,10 @@ public class MentorInfo extends BaseTimeEntity {
 
 	private String description;
 
+	private long totalRating;
+
 	@OneToMany(mappedBy = "info")
 	private List<Review> reviews = new ArrayList<>();
-
-	private long totalRating;
 
 	@Builder
 	public MentorInfo(Member member, Field field, String job, int career, String description) {
@@ -57,6 +57,7 @@ public class MentorInfo extends BaseTimeEntity {
 		this.job = job;
 		this.career = career;
 		this.description = description;
+		this.totalRating = 0;
 	}
 
 	public void updateInfo(Field field, String job, int career, String description) {
