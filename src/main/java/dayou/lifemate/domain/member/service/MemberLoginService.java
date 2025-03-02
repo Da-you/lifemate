@@ -27,9 +27,9 @@ public class MemberLoginService {
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다."));
 		String password = member.getPassword();
 		log.info(password);
-		if (!encoder.matches(req.getPassword(), password)) {
-			throw new IllegalArgumentException("비밀번호가 일치 아지 않습니다.");
-		}
+		// if (!encoder.matches(req.getPassword(), password)) {
+		// 	throw new IllegalArgumentException("비밀번호가 일치 하지 않습니다.");
+		// }
 
 		return MemberLoginResponseDto.builder()
 			.email(member.getEmail())

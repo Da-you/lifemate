@@ -74,7 +74,7 @@ public class TodoService {
 	@Transactional(readOnly = true)
 	public Page<TodoResponseDto> getTodoList(LocalDate date, Category category, Pageable pageable) {
 		Page<Todo> todos = category == null ? todoRepo.findAll(pageable) :
-			todoRepo.findAllByCategoryAndDate(category, date, pageable);
+			todoRepo.findTodosByComplexCondition(date, category, pageable);
 
 		return todos.map(TodoResponseDto::new);
 	}
