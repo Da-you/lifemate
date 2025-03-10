@@ -25,7 +25,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 		+ "where t.date = :date "
 		+ "and t.category = :category "
 		+ "order by t.createdAt DESC")
-	@EntityGraph(attributePaths = "tasks")
+	@EntityGraph(attributePaths = {"tasks", "member"})
 	Page<Todo> findTodosByComplexCondition(
 		@Param("date") LocalDate date,
 		@Param("category") Category category,
