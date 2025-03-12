@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,6 +35,9 @@ public class Lecture extends BaseTimeEntity {
 	private LocalDateTime eventDate;
 	private int maxParticipants;
 	private int currentParticipants;
+
+	@Version
+	private Long version;
 
 	@Builder
 	public Lecture(Member mentor, String title, String description, LocalDateTime eventDate, int maxParticipants) {
