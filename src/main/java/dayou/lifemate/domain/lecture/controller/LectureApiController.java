@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dayou.lifemate.domain.lecture.dto.LectureResponseDto;
+import dayou.lifemate.domain.lecture.service.LectureJoinService;
 import dayou.lifemate.domain.lecture.service.LectureService;
 import dayou.lifemate.domain.member.service.MemberLoginService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class LectureApiController {
 
 	private final LectureService lectureService;
 	private final MemberLoginService loginService;
+	private final LectureJoinService joinService;
 
 	@PostMapping
 	public ResponseEntity<LectureResponseDto> createLecture(@AuthenticationPrincipal User user) {
@@ -31,5 +33,12 @@ public class LectureApiController {
 	@GetMapping("/{id}")
 	public ResponseEntity<LectureResponseDto> getLecture(@PathVariable(name = "id") Long lectureId) {
 		return ResponseEntity.ok(lectureService.getLecture(lectureId));
+	}
+
+	@PostMapping("/{id}")
+	public void joinLecture(@AuthenticationPrincipal User user,
+		@PathVariable(name = "id") Long lectureId) {
+		String email = loginService.getCurrentMember(user.getUsername());
+		joinService.joinLectureUseNamed(email, lectureId);
 	}
 }

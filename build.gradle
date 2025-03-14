@@ -30,6 +30,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    //slack
+    implementation 'com.slack.api:slack-api-client:1.45.3'
+    implementation 'com.slack.api:slack-api-model:1.45.3'
+    implementation 'com.slack.api:slack-app-backend:1.45.3'
+
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 
     compileOnly 'org.projectlombok:lombok'
