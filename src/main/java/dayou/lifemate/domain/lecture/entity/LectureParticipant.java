@@ -2,6 +2,7 @@ package dayou.lifemate.domain.lecture.entity;
 
 import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.global.BaseTimeEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +31,9 @@ public class LectureParticipant extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
+
+	@Column(name = "external_id")
+	private String externalId;
 
 	@Builder
 	public LectureParticipant(Lecture lecture, Member member) {

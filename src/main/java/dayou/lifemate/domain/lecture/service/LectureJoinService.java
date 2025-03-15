@@ -19,7 +19,13 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class LectureJoinService {
-
+	/**
+	 *  발생 가능 문제
+	 *  1. 트랜잭션이 너무 커서 성능 저하 발생 > 트랜잭션 범위 줄이기
+	 *  2. 외부 API 장애 시 전체 트랜잭션 롤백 >
+	 *  3. 알림 전송 실패 시에도 트랜잭션 롤백
+	 *  4.
+	 */
 	private final LectureRepository lectureRepo;
 	private final MemberRepository memberRepo;
 	private final LectureParticipantRepository participantRepo;
