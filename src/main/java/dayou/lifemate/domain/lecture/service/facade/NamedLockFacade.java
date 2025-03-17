@@ -15,14 +15,8 @@ public class NamedLockFacade implements LockFacade {
 	private final LectureJoinService joinService;
 	private final LectureRepository lectureRepo;
 
-	// @Override
-	// public void joinLecture(String email, Long lectureId) throws InterruptedException {
-	// 	lectureRepo.getLock(String.format("lecture_%d", lectureId), 3);
-	// 	joinService.joinLectureUseNamed(email, lectureId);
-	// 	lectureRepo.releaseLock(String.format("lecture_%d", lectureId));
-	// }
 	@Override
-	@Transactional
+	@Transactional // 트랜잭션 범위를 DB 단계에서만 진행
 	public void joinLecture(String email, Long lectureId) {
 		int maxRetries = 5;
 		int retryCount = 0;

@@ -31,7 +31,7 @@ public class LectureParticipant extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
-
+	// 외부 api를 통한 결제 ID
 	@Column(name = "external_id")
 	private String externalId;
 
@@ -39,5 +39,9 @@ public class LectureParticipant extends BaseTimeEntity {
 	public LectureParticipant(Lecture lecture, Member member) {
 		this.lecture = lecture;
 		this.member = member;
+	}
+
+	public void updatedExternalId(String externalId){
+		this.externalId = externalId;
 	}
 }

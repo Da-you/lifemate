@@ -22,7 +22,7 @@ public class LectureJoinService {
 	/**
 	 *  발생 가능 문제
 	 *  1. 트랜잭션이 너무 커서 성능 저하 발생 > 트랜잭션 범위 줄이기
-	 *  2. 외부 API 장애 시 전체 트랜잭션 롤백 >
+	 *  2. 외부 API 장애 시 전체 트랜잭션 롤백
 	 *  3. 알림 전송 실패 시에도 트랜잭션 롤백
 	 *  4.
 	 */
@@ -49,27 +49,54 @@ public class LectureJoinService {
 		lecture.increaseParticipants();
 	}
 
-	// 비관락 사용
 	@Transactional
-	public void joinLectureUsePessmistic(String email, Long lectureId) {
-		Lecture lecture = lectureRepo.findByIdUsePessimistic(lectureId).orElseThrow(
+	public LectureParticipant joinLectureReturnEntity(String email, Long lectureId) {
+		Lecture lecture = lectureRepo.findById(lectureId).orElseThrow(
 			() -> new EntityNotFoundException("강연을 찾을 수 없습니다."));
 
 		Member member = memberRepo.findByEmail(email).orElseThrow(
 			() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+
+		lecture.increaseParticipants();
 
 		LectureParticipant participant = LectureParticipant.builder()
 			.lecture(lecture)
 			.member(member)
 			.build();
 		participantRepo.save(participant);
-		lecture.increaseParticipants();
+		return participant;
 	}
 
 	// 낙관락 사용
 	@Transactional
 	public void joinLectureUseOptimistic(String email, Long lectureId) {
 		Lecture lecture = lectureRepo.findByIdUseOpimistic(lectureId).orElseThrow(
+			() -> new EntityNotFoundException("강연을 찾을 수 없습니다."));
+
+		Member member = memberRepo.findByEmail(email).orElseThrow(
+			() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+		lecture.increaseParticipants();
+
+		// 외부 결제 API 사용을 가정
+		// 1. 외부 api를 호출해 결제를 하고 이벤트 참가 처리
+		ExternalPayResponseDto res = externaleApi.registerParticipant(lectureId, email);
+
+		if (!res.isSuccess()) {
+			throw new RuntimeException("외부 API 호출 실패: " + res.getErrorMessage());
+		}
+		LectureParticipant participant = LectureParticipant.builder()
+			.lecture(lecture)
+			.member(member)
+			.build();
+		participantRepo.save(participant);
+		//슬랙 발송
+		messageApi.sendLectureJoinMessage(lecture.getTitle(), email, res.getExternalId());
+	}
+
+	// 비관락 사용
+	@Transactional
+	public void joinLectureUsePessmistic(String email, Long lectureId) {
+		Lecture lecture = lectureRepo.findByIdUsePessimistic(lectureId).orElseThrow(
 			() -> new EntityNotFoundException("강연을 찾을 수 없습니다."));
 
 		Member member = memberRepo.findByEmail(email).orElseThrow(
@@ -93,23 +120,17 @@ public class LectureJoinService {
 			() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 		// 참가자 수 증가
 		lecture.increaseParticipants();
-
-		// 외부 결제 API 사용을 가정
-		// 1. 외부 api를 호출해 결제를 하고 이벤트 참가 처리
-		ExternalPayResponseDto res = externaleApi.registerParticipant(lectureId, email);
-
-		if (!res.isSuccess()) {
-			throw new RuntimeException("외부 API 호출 실패: " + res.getErrorMessage());
-		}
 		// 2. 참가자 정보를 저장
 		LectureParticipant participant = LectureParticipant.builder()
 			.lecture(lecture)
 			.member(member)
 			.build();
 		participantRepo.save(participant);
+	}
 
-		//슬랙 발송
-		messageApi.sendLectureJoinMessage(lecture.getTitle(), email, res.getExternalId());
-
+	// 참가자 정보에 외부 api 정보 저장
+	@Transactional
+	public void updateExternalId(LectureParticipant participant, String externalId) {
+		participant.updatedExternalId(externalId);
 	}
 }
