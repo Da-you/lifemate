@@ -11,6 +11,7 @@ import dayou.lifemate.domain.member.dto.response.MateResponseDto.MateListRespons
 import dayou.lifemate.domain.member.entity.Mate;
 import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.domain.member.entity.MentorInfo;
+import dayou.lifemate.domain.member.enums.Role;
 import dayou.lifemate.domain.member.repository.MateRepository;
 import dayou.lifemate.domain.member.repository.MemberRepository;
 import dayou.lifemate.domain.member.repository.MentorInfoRepository;
@@ -27,10 +28,12 @@ public class MateService {
 
 	@Transactional
 	public MateResponseDto mate(String email, Long memberId) {
-		Member mentee = memberRepo.findByEmail(email)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다."));
-
 		Member mentor = memberRepo.findById(memberId)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다."));
+		if (mentor.getRole() != Role.ROLE_MENTOR){
+			throw new IllegalArgumentException("멘토로 등록된 사용자가 아닙니다.");
+		}
+		Member mentee = memberRepo.findByEmail(email)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다."));
 
 		if (mateRepo.existsByMenteeAndMentor(mentee, mentor)) {

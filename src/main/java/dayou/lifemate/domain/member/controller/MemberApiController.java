@@ -24,6 +24,7 @@ import dayou.lifemate.domain.member.dto.response.MateResponseDto.MateListRespons
 import dayou.lifemate.domain.member.dto.response.MemberLoginResponseDto;
 import dayou.lifemate.domain.member.dto.response.MemberResponseDto;
 import dayou.lifemate.domain.member.dto.response.MentorDetailResponseDto;
+import dayou.lifemate.domain.member.dto.response.MentorDetailResponseDto.MenterListResponseDto;
 import dayou.lifemate.domain.member.dto.response.MentorResponseDto;
 import dayou.lifemate.domain.member.service.MateService;
 import dayou.lifemate.domain.member.service.MemberLoginService;
@@ -68,28 +69,31 @@ public class MemberApiController {
 	public ResponseEntity<MentorResponseDto> updateMentorInfo(@AuthenticationPrincipal User user,
 		@RequestBody MentorRequestDto req) {
 		String email = loginService.getCurrentMember(user.getUsername());
-		return ResponseEntity.ok(mentorInfoService.register(email, req));
+		return ResponseEntity.ok(mentorInfoService.updateInfo(email, req));
 	}
 
 	@GetMapping("/mentor")
-	public ResponseEntity<Page<MentorDetailResponseDto>> getMentorList(Pageable pageable) {
+	public ResponseEntity<Page<MenterListResponseDto>> getMentorList(Pageable pageable) {
 		return ResponseEntity.ok(mentorInfoService.getMentorList(pageable));
 	}
 
 	// 멘토 entity pk로 검색
-	@GetMapping("/mentor/{mentorId}")
-	public ResponseEntity<MentorDetailResponseDto> getMentor(@PathVariable Long mentorId) {
-		return ResponseEntity.ok(mentorInfoService.getMentor(mentorId));
+	@PostMapping("/mentor/{id}")
+	public ResponseEntity<MentorDetailResponseDto> getMentor(@AuthenticationPrincipal User user,
+		@PathVariable(name = "id") Long mentorId) {
+		String email = loginService.getCurrentMember(user.getUsername());
+		return ResponseEntity.ok(mentorInfoService.getMentor(email, mentorId));
 	}
 
-	@PostMapping("/mate/{mentorId}")
-	public ResponseEntity<MateResponseDto> mate(@AuthenticationPrincipal User user, @PathVariable Long memberId) {
+	@PostMapping("/mate/{id}")
+	public ResponseEntity<MateResponseDto> mate(@AuthenticationPrincipal User user,
+		@PathVariable(name = "id") Long memberId) {
 		String email = loginService.getCurrentMember(user.getUsername());
 		return ResponseEntity.ok(mateService.mate(email, memberId));
 	}
 
-	@DeleteMapping("/mate/{mate_id}")
-	public void deleteMate(@AuthenticationPrincipal User user, @PathVariable Long mateId) {
+	@DeleteMapping("/mate/{id}")
+	public void deleteMate(@AuthenticationPrincipal User user, @PathVariable(name = "id") Long mateId) {
 		String email = loginService.getCurrentMember(user.getUsername());
 		mateService.deleteMate(email, mateId);
 	}

@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MentorDetailResponseDto {
 
+	private Long memberId;
+
 	private Long infoId;
 
 	private String nickname;
@@ -31,6 +33,7 @@ public class MentorDetailResponseDto {
 	// list
 	@Builder
 	public MentorDetailResponseDto(MentorInfo info) {
+		this.memberId = info.getMember().getId();
 		this.infoId = info.getId();
 		this.nickname = info.getMember().getNickname();
 		this.field = info.getField();
@@ -38,9 +41,25 @@ public class MentorDetailResponseDto {
 		this.career = info.getCareer();
 		this.description = info.getDescription();
 		this.totalReviewCount = info.getReviews().size();
-		this.averageRating = (double)info.getTotalRating() /info.getReviews().size();
+		this.averageRating = (double)info.getTotalRating() / info.getReviews().size();
 		this.totalMenteeCount = info.getMember().getMates().size();
+	}
 
+	@Getter
+	@NoArgsConstructor
+	public static class MenterListResponseDto {
+		private Long infoId;
+		private String nickname;
+		private Field field;
+		private double averageRating;
+
+		@Builder
+		public MenterListResponseDto(MentorInfo info) {
+			this.infoId = info.getId();
+			this.nickname = info.getMember().getNickname();
+			this.field = info.getField();
+			this.averageRating = (double)info.getTotalRating() / info.getReviews().size();
+		}
 	}
 
 }
