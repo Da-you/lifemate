@@ -3,8 +3,10 @@ package dayou.lifemate.domain.lecture.entity;
 import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.global.BaseTimeEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,11 +27,13 @@ public class LectureParticipant extends BaseTimeEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_id")
+	@JoinColumn(name = "lecture_id",
+		foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Lecture lecture;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "member_id",
+		foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Member member;
 	// 외부 api를 통한 결제 ID
 	@Column(name = "external_id")
@@ -41,7 +45,7 @@ public class LectureParticipant extends BaseTimeEntity {
 		this.member = member;
 	}
 
-	public void updatedExternalId(String externalId){
+	public void updatedExternalId(String externalId) {
 		this.externalId = externalId;
 	}
 }

@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 
 import dayou.lifemate.domain.member.entity.Member;
 import dayou.lifemate.global.BaseTimeEntity;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +29,8 @@ public class Lecture extends BaseTimeEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "mentor_id")
+	@JoinColumn(name = "mentor_id",
+		foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Member mentor;
 
 	private String title;
