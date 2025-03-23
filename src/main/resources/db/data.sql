@@ -1,4 +1,4 @@
--- cte 문제 발생시
+`-- cte 문제 발생시
 -- SHOW VARIABLES LIKE 'cte_max_recursion_depth'; cte_max 확인
 -- SET SESSION cte_max_recursion_depth = 1000000; cte_max 조정
 
@@ -23,7 +23,8 @@ SELECT
 FROM numbers;
 
 -- MentorInfo 테이블에 100만 명의 멘토 정보 삽입 --
-INSERT INTO mentor_info (member_id, field, job, career, description, total_rating, created_at, updated_at)
+INSERT INTO mentor_info (member_id, field, job, career, description, total_rating, is_available
+ ,created_at, updated_at)
 WITH RECURSIVE numbers AS (
     SELECT /*+ SET_VAR(cte_max_recursion_depth = 1000000) */
     1 AS n
@@ -41,7 +42,8 @@ SELECT
     CONCAT('Mentor Job ', n) AS job,  -- 직업 설정
     FLOOR(RAND() * 20) + 1 AS career,  -- 1~20년 경력 랜덤 설정
     CONCAT('This is mentor ', n) AS description,  -- 설명 설정
-    0 As total_rating,
+    0 AS total_rating,
+    TRUE as is_available
     NOW() AS created_at,  -- 현재 시간
     NOW() AS updated_at   -- 현재 시간
 FROM numbers
@@ -130,4 +132,4 @@ JOIN (
     FROM review
     GROUP BY mentor_id
 ) r ON mi.member_id = r.mentor_id
-SET mi.total_rating = r.total_rating_sum;
+SET mi.total_rating = r.total_rating_sum;`

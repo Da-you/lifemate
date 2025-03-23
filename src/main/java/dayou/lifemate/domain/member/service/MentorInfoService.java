@@ -10,11 +10,12 @@ import dayou.lifemate.domain.member.dto.response.MentorDetailResponseDto;
 import dayou.lifemate.domain.member.dto.response.MentorDetailResponseDto.MenterListResponseDto;
 import dayou.lifemate.domain.member.dto.response.MentorResponseDto;
 import dayou.lifemate.domain.member.entity.Member;
-import dayou.lifemate.domain.member.entity.MenteeInterest;
 import dayou.lifemate.domain.member.entity.MentorInfo;
 import dayou.lifemate.domain.member.repository.MemberRepository;
-import dayou.lifemate.domain.member.repository.MenteeInterestRepository;
 import dayou.lifemate.domain.member.repository.MentorInfoRepository;
+import dayou.lifemate.domain.member.service.client.BookingClient;
+import dayou.lifemate.domain.member.service.client.MenteeInterestClient;
+import dayou.lifemate.domain.member.service.client.RankingClient;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +25,9 @@ public class MentorInfoService {
 
 	private final MentorInfoRepository mentorRepo;
 	private final MemberRepository memberRepo;
-	private final MenteeInterestRepository menteeInterestRepo;
+	private final MenteeInterestClient interestClient;
+	private final BookingClient bookingClient;
+	private final RankingClient rankingClient;
 
 	@Transactional
 	public MentorResponseDto register(String email, MentorRequestDto req) {
@@ -70,21 +73,16 @@ public class MentorInfoService {
 		return mentors.map(MenterListResponseDto::new);
 	}
 
-	@Transactional
-	public MentorDetailResponseDto getMentor(String email, Long mentorId) {
+	public MentorDetailResponseDto getMentor(String email, Long mentorInfoId) throws InterruptedException {
 		Member mentee = memberRepo.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("회원을 찾지 못했습니다."));
-		MentorInfo mentorInfo = mentorRepo.findById(mentorId)
+		MentorInfo mentorInfo = mentorRepo.findById(mentorInfoId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
-		MenteeInterest interest = menteeInterestRepo.findByMenteeAndField(mentee, mentorInfo.getField());
-		if (interest != null) {
-			// 관심 목록에 관련된 멘토 리스트 추가
-			interest.updateViewCount();
-		}
-		MenteeInterest menteeInterest = MenteeInterest.builder()
-			.mentee(mentee)
-			.field(mentorInfo.getField())
-			.build();
-		menteeInterestRepo.save(menteeInterest);
+
+		// 조회 멘토와 관계 형성 가능 여부
+		bookingClient.isAvailable(mentorInfo);
+		rankingClient.getRanking(mentorInfo);
+		// 사용자 응답과 관련 없는 코드 -> 비동기적 실행으로 변경
+		interestClient.asyncInterest(mentee, mentorInfo);
 
 		return MentorDetailResponseDto.builder()
 			.info(mentorInfo)

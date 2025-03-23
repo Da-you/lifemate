@@ -78,11 +78,11 @@ public class MemberApiController {
 	}
 
 	// 멘토 entity pk로 검색
-	@PostMapping("/mentor/{id}")
+	@GetMapping("/mentor/{id}")
 	public ResponseEntity<MentorDetailResponseDto> getMentor(@AuthenticationPrincipal User user,
-		@PathVariable(name = "id") Long mentorId) {
+		@PathVariable(name = "id") Long mentorInfoId) throws InterruptedException {
 		String email = loginService.getCurrentMember(user.getUsername());
-		return ResponseEntity.ok(mentorInfoService.getMentor(email, mentorId));
+		return ResponseEntity.ok(mentorInfoService.getMentor(email, mentorInfoId));
 	}
 
 	@PostMapping("/mate/{id}")

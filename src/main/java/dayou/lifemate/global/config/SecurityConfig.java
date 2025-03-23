@@ -41,7 +41,7 @@ public class SecurityConfig {
 						"/members/v1/join",
 						"/members/v1/login",
 						"/members/v1/mentor",
-						"/members/v1/mentor/{mentorId}"
+						"/members/v1/mentor/{id}"
 					)
 					.permitAll()
 					.anyRequest().permitAll())

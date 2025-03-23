@@ -22,8 +22,8 @@ public class AsyncConfig {
 		return executor;
 	}
 
-	@Bean(name = "emitExecutor")
-	public Executor emitExecutor() {
+	@Bean(name = "interestExecutor")
+	public Executor interestExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(5);      // 기본 실행 대기 스레드 수
 		executor.setMaxPoolSize(10);      // 최대 스레드 수

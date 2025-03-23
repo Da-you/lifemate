@@ -47,6 +47,8 @@ public class MentorInfo extends BaseTimeEntity {
 
 	private long totalRating;
 
+	private boolean isAvailable;
+
 	@OneToMany(mappedBy = "info")
 	private List<Review> reviews = new ArrayList<>();
 
@@ -57,6 +59,7 @@ public class MentorInfo extends BaseTimeEntity {
 		this.job = job;
 		this.career = career;
 		this.description = description;
+		this.isAvailable = false;
 		this.totalRating = 0;
 	}
 
