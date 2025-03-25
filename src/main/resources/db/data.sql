@@ -43,7 +43,7 @@ SELECT
     FLOOR(RAND() * 20) + 1 AS career,  -- 1~20년 경력 랜덤 설정
     CONCAT('This is mentor ', n) AS description,  -- 설명 설정
     0 AS total_rating,
-    TRUE as is_available
+    TRUE as is_available,
     NOW() AS created_at,  -- 현재 시간
     NOW() AS updated_at   -- 현재 시간
 FROM numbers
@@ -132,4 +132,4 @@ JOIN (
     FROM review
     GROUP BY mentor_id
 ) r ON mi.member_id = r.mentor_id
-SET mi.total_rating = r.total_rating_sum;`
+SET mi.total_rating = r.total_rating_sum;

@@ -78,7 +78,7 @@ public class MemberApiController {
 	}
 
 	// 멘토 entity pk로 검색
-	@GetMapping("/mentor/{id}")
+	@PostMapping("/mentor/{id}")
 	public ResponseEntity<MentorDetailResponseDto> getMentor(@AuthenticationPrincipal User user,
 		@PathVariable(name = "id") Long mentorInfoId) throws InterruptedException {
 		String email = loginService.getCurrentMember(user.getUsername());

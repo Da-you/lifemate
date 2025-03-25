@@ -42,6 +42,6 @@ public class MenteeInterest {
 	}
 
 	public void updateViewCount() {
-		this.viewCount += 1;
+		this.viewCount++;
 	}
 }

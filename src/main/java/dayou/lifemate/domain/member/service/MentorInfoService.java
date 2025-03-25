@@ -79,8 +79,8 @@ public class MentorInfoService {
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
 
 		// 조회 멘토와 관계 형성 가능 여부
-		bookingClient.isAvailable(mentorInfo);
-		rankingClient.getRanking(mentorInfo);
+		bookingClient.isAsyncAvailable(mentorInfo);
+		rankingClient.getAsyncRanking(mentorInfo);
 		// 사용자 응답과 관련 없는 코드 -> 비동기적 실행으로 변경
 		interestClient.asyncInterest(mentee, mentorInfo);
 
