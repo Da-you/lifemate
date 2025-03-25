@@ -22,11 +22,10 @@ public class MenteeInterestClient {
 	@Async("interestExecutor")
 	public void asyncInterest(Member mentee, MentorInfo mentorInfo) throws InterruptedException {
 		Thread.sleep(1); // 외부 api 환경을 구성하기 위해 딜레이 설정
-		log.info("관심사 저장 비동기적실행--");
+		log.info("--관심사 저장 비동기 실행--");
 		MenteeInterest interest = menteeInterestRepo.findByMenteeAndField(mentee, mentorInfo.getField());
 		if (interest != null) {
 			// 관심 목록에 관련된 멘토 리스트 추가
-			log.info("카운트 증가");
 			interest.updateViewCount();
 		} else {
 			MenteeInterest menteeInterest = MenteeInterest.builder()
@@ -35,6 +34,7 @@ public class MenteeInterestClient {
 				.build();
 			menteeInterestRepo.save(menteeInterest);
 		}
+		log.info("--관심사 저장 비동기 실행 완료--");
 	}
 
 	@Transactional

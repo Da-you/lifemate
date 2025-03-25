@@ -88,4 +88,20 @@ public class MentorInfoService {
 			.info(mentorInfo)
 			.build();
 	}
+
+	public MentorDetailResponseDto getMentorNtoAsync(String email, Long mentorInfoId) throws InterruptedException {
+		Member mentee = memberRepo.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("회원을 찾지 못했습니다."));
+		MentorInfo mentorInfo = mentorRepo.findById(mentorInfoId)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
+
+		// 조회 멘토와 관계 형성 가능 여부
+		bookingClient.isSyncAvailable(mentorInfo);
+		rankingClient.getSyncRanking(mentorInfo);
+		// 사용자 응답과 관련 없는 코드 -> 비동기적 실행으로 변경
+		interestClient.syncInterest(mentee, mentorInfo);
+
+		return MentorDetailResponseDto.builder()
+			.info(mentorInfo)
+			.build();
+	}
 }

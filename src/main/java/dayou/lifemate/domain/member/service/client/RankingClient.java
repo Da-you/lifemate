@@ -1,5 +1,7 @@
 package dayou.lifemate.domain.member.service.client;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -15,16 +17,20 @@ public class RankingClient {
 	private final MentorInfoRepository mentorInfoRepo;
 
 	@Async("asyncExecutor")
-	public Integer getAsyncRanking(MentorInfo mentorInfo) throws InterruptedException {
+	public CompletableFuture<Integer> getAsyncRanking(MentorInfo mentorInfo) throws InterruptedException {
 		log.info("랭킹 조회 비동기적 실행------------------------ ");
 		Thread.sleep(1);
-		return mentorInfoRepo.countByFieldAndTotalRatingGreaterThan(mentorInfo.getField(), mentorInfo.getTotalRating())
-			+ 1;
+		Integer ranking =
+			mentorInfoRepo.countByFieldAndTotalRatingGreaterThan(mentorInfo.getField(), mentorInfo.getTotalRating())
+				+ 1;
+		log.info("랭킹 조회 비동기적 실행 완료------------------------ ");
+		return CompletableFuture.completedFuture(ranking);
 	}
 
 	public Integer getSyncRanking(MentorInfo mentorInfo) throws InterruptedException {
 		log.info("랭킹 조회 동기적 실행------------------------ ");
 		Thread.sleep(1);
+		log.info("랭킹 조회 동기적 실행 완료------------------------ ");
 		return mentorInfoRepo.countByFieldAndTotalRatingGreaterThan(mentorInfo.getField(), mentorInfo.getTotalRating())
 			+ 1;
 	}

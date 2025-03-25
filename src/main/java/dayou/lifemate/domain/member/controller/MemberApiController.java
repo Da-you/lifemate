@@ -85,6 +85,13 @@ public class MemberApiController {
 		return ResponseEntity.ok(mentorInfoService.getMentor(email, mentorInfoId));
 	}
 
+	@PostMapping("/mentor-sync/{id}")
+	public ResponseEntity<MentorDetailResponseDto> getMentorNotAsync(@AuthenticationPrincipal User user,
+		@PathVariable(name = "id") Long mentorInfoId) throws InterruptedException {
+		String email = loginService.getCurrentMember(user.getUsername());
+		return ResponseEntity.ok(mentorInfoService.getMentorNtoAsync(email, mentorInfoId));
+	}
+
 	@PostMapping("/mate/{id}")
 	public ResponseEntity<MateResponseDto> mate(@AuthenticationPrincipal User user,
 		@PathVariable(name = "id") Long memberId) {
