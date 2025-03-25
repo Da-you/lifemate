@@ -3,45 +3,21 @@ package dayou.lifemate.global;
 import org.hibernate.resource.jdbc.spi.StatementInspector;
 import org.springframework.stereotype.Component;
 
-import lombok.Getter;
+import dayou.lifemate.global.interceptor.RequestContext;
+import dayou.lifemate.global.interceptor.RequestContextHolder;
 
 @Component
 public class QueryCountInspector implements StatementInspector {
-	private final ThreadLocal<Counter> queryCount = new ThreadLocal<>();
-
-	public void startCounter() {
-		queryCount.set(new Counter(0L, System.currentTimeMillis()));
-	}
-
-	public Counter getQueryCount() {
-		return queryCount.get();
-	}
-
-	public void clearCounter() {
-		queryCount.remove();
-	}
-
 	@Override
 	public String inspect(String sql) {
-		Counter counter = queryCount.get();
-		if (counter != null) {
-			counter.increaseCount();
+		// 현재 스레드의 RequestContext 가져오기
+		RequestContext ctx = RequestContextHolder.getContext();
+
+		if (ctx != null) {
+			// 쿼리 카운트 증가
+			ctx.incrementQueryCount(sql);
 		}
+
 		return sql;
-	}
-
-	@Getter
-	public class Counter {
-		private Long count;
-		private Long time;
-
-		public Counter(Long count, Long time) {
-			this.count = count;
-			this.time = time;
-		}
-
-		public void increaseCount() {
-			count++;
-		}
 	}
 }
